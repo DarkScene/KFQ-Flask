@@ -6,6 +6,7 @@
 
 {% block content %}
 <br>
+<h1 class="blcokquote text-center">다운로드 파일 목록</h1>
 <div class="container-fluid">
     <table class="table table-sm">
         <thead>
@@ -13,16 +14,18 @@
                 <th scope="col">#</th>
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Download</th>
             </tr>
         </thead>
         <tbody>
+            {% for file in files %}
             <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{loop.index}}</th>
                 <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>{{file}}</td>
+                <td><a href="/files/{{file}}">파일 다운로드</a></td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
