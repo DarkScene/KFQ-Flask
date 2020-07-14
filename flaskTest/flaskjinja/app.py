@@ -41,5 +41,9 @@ def list_files():
 def get_file(path):
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
+@app.route('/resume')
+def resume():
+    return 
+
 if __name__ == '__main__':
     app.run(debug=True, port=8089)
