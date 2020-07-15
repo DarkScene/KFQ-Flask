@@ -46,12 +46,14 @@ def resume():
     if request.method == 'GET':
         return render_template('resume.html')
     else:
+        result = request.form
+
         f = request.files['file']
         # 저장할 경로 + 파일명
         dirname = os.path.dirname(__file__) + '/files/' + f.filename
         print(dirname)
         f.save(dirname)
-    return redirect('/files')
+    return render_template('/files', result = result, file = f.filename)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8089)
