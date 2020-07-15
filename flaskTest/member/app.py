@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, jsonify
 import pymysql
+import os
 
 app = Flask(__name__)
  
@@ -207,5 +208,14 @@ def ajaxlistpost():
     
     return jsonify(result)
 
+@app.route('/imglist')
+def imglist():
+    print(os.path.dirname(__file__))
+    dirname=os.path.dirname(__file__) + '/static/img/'
+    filenames = os.listdir(dirname)
+    print(filenames)
+    return render_template('imglist.html', filenames=filenames)
+
+    
 if __name__ == '__main__':
     app.run(debug=True)
