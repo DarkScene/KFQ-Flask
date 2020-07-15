@@ -87,6 +87,84 @@ def content(userid):
     
     return render_template('content.html', list = result)
 
+@app.route('/updateform/<userid>', methods=['GET'])
+def updateformget(userid):
+    connection=pymysql.connect(host='localhost',
+                            user='root',
+                            password='qwer1234',
+                            db='test',
+                            charset='utf8mb4',
+                            cursorclass=pymysql.cursors.DictCursor)
+
+    try:
+        with connection.cursor() as cursor:
+            sql="select * from users where userid=%s"
+            cursor.execute(sql, userid)
+            result = cursor.fetchone()
+    finally:
+        connection.close()
+    
+    return render_template('updateform.html', list=result)
+
+@app.route('/updateform', methods=['POST'])
+def updateformpost():
+    connection=pymysql.connect(host='localhost',
+                            user='root',
+                            password='qwer1234',
+                            db='test',
+                            charset='utf8mb4',
+                            cursorclass=pymysql.cursors.DictCursor)
+
+    userid = request.form.get('userid')
+    userpw = request.form.get('userpw')
+    username = request.form.get('username')
+    userage = request.form.get('userage')
+    usermail = request.form.get('usermail')
+    useradd = request.form.get('useradd')
+    usergender = request.form.get('usergender')
+    usertel = request.form.get('usertel')
+
+    try:
+        with connection.cursor() as cursor:
+            sql='''
+                update users
+                set
+                userpw=%s,
+                username=%s,
+                userage=%s,
+                usermail=%s,
+                useradd=%s,
+                usergender=%s,
+                usertel=%s
+                where userid=%s;
+            '''
+            data = (userpw, username, userage, usermail, useradd, usergender, usertel, userid)
+            cursor.execute(sql, data)
+            connection.commit()
+    finally:
+        connection.close()
+    
+    return redirect('/list')
+
+@app.route('/deleteform/<userid>')
+def deleteformget(userid):
+    connection=pymysql.connect(host='localhost',
+                            user='root',
+                            password='qwer1234',
+                            db='test',
+                            charset='utf8mb4',
+                            cursorclass=pymysql.cursors.DictCursor)
+
+    try:
+        with connection.cursor() as cursor:
+            sql="delete from users where userid=%s"
+            cursor.execute(sql, userid)
+            connection.commit()
+    finally:
+        connection.close()
+    
+    return redirect('/list')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
