@@ -41,9 +41,17 @@ def list_files():
 def get_file(path):
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
-@app.route('/resume')
+@app.route('/resume', methods=['GET','POST'])
 def resume():
-    return 
+    if request.method == 'GET':
+        return render_template('resume.html')
+    else:
+        f = request.files['file']
+        # 저장할 경로 + 파일명
+        dirname = os.path.dirname(__file__) + '/files/' + f.filename
+        print(dirname)
+        f.save(dirname)
+    return redirect('/files')
 
 if __name__ == '__main__':
     app.run(debug=True, port=8089)
