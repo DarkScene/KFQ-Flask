@@ -66,5 +66,27 @@ def list():
 
     return render_template('list.html', list=result)
 
+@app.route('/content/<userid>')
+def content(userid):
+    connection=pymysql.connect(host='localhost',
+                            user='root',
+                            password='qwer1234',
+                            db='test',
+                            charset='utf8mb4',
+                            cursorclass=pymysql.cursors.DictCursor)
+    
+    try:
+        with connection.cursor() as cursor:
+            sql="select * from users where userid=%s"
+            cursor.execute(sql, userid)
+            result = cursor.fetchone()
+            print(result)
+
+    finally:
+        connection.close()
+    
+    return render_template('content.html', list = result)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
