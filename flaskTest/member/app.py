@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, jsonify
 import pymysql
 
 app = Flask(__name__)
@@ -165,6 +165,47 @@ def deleteformget(userid):
     
     return redirect('/list')
 
+@app.route('/ajaxlist', methods=['GET'])
+def ajaxlistget():
+    connection=pymysql.connect(host='localhost',
+                            user='root',
+                            password='qwer1234',
+                            db='test',
+                            charset='utf8mb4',
+                            cursorclass=pymysql.cursors.DictCursor)
+
+    try:
+        with connection.cursor() as cursor:
+            sql="select * from users"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+    finally:
+        connection.close()
+    
+    return render_template('ajaxlist.html', list=result)
+
+@app.route('/ajaxlist', methods=['POST'])
+def ajaxlistpost():
+    connection=pymysql.connect(host='localhost',
+                            user='root',
+                            password='qwer1234',
+                            db='test',
+                            charset='utf8mb4',
+                            cursorclass=pymysql.cursors.DictCursor)
+    
+    userid = request.form.get('userid')
+
+    try:
+        with connection.cursor() as cursor:
+            sql="select * from users where userid like %s"
+            userid = '%'+userid+'%'
+            cursor.execute(sql, userid)
+            result = cursor.fetchall()
+    
+    finally:
+        connection.close()
+    
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True)
