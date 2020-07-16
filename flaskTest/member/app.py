@@ -21,7 +21,7 @@ def usersform():
         userpw = request.form.get('userpw')
         username = request.form.get('username')
         userage = request.form.get('userage')
-        usermail = request.form.get('usermail')
+        useremail = request.form.get('useremail')
         useradd = request.form.get('useradd')
         usergender = request.form.get('usergender')
         usertel = request.form.get('usertel')
@@ -38,7 +38,7 @@ def usersform():
                 sql='''
                     insert into users values(%s, %s, %s, %s, %s, %s, %s, %s)
                 '''
-                data = (userid, userpw, username, userage, usermail, useradd, usergender, usertel)
+                data = (userid, userpw, username, userage, useremail, useradd, usergender, usertel)
                 cursor.execute(sql, data)
                 connection.commit()
 
@@ -120,7 +120,7 @@ def updateformpost():
     userpw = request.form.get('userpw')
     username = request.form.get('username')
     userage = request.form.get('userage')
-    usermail = request.form.get('usermail')
+    useremail = request.form.get('useremail')
     useradd = request.form.get('useradd')
     usergender = request.form.get('usergender')
     usertel = request.form.get('usertel')
@@ -133,13 +133,13 @@ def updateformpost():
                 userpw=%s,
                 username=%s,
                 userage=%s,
-                usermail=%s,
+                useremail=%s,
                 useradd=%s,
                 usergender=%s,
                 usertel=%s
                 where userid=%s;
             '''
-            data = (userpw, username, userage, usermail, useradd, usergender, usertel, userid)
+            data = (userpw, username, userage, useremail, useradd, usergender, usertel, userid)
             cursor.execute(sql, data)
             connection.commit()
     finally:
@@ -216,6 +216,6 @@ def imglist():
     print(filenames)
     return render_template('imglist.html', filenames=filenames)
 
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
